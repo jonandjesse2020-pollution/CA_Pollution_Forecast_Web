@@ -18,10 +18,10 @@ st.markdown(
 POLLUTANTS = {
     "PM₂.₅ (Fine Particulate)": {"col": "PM25", "unit": "μg/m³"},
     "PM₁₀ (Coarse Particulate)": {"col": "PM10", "unit": "μg/m³"},
-    "O₃ (Ozone)": {"col": "O3", "unit": "μg/m³"},
+    "O₃ (Ozone)": {"col": "O3", "unit": "mg/m³"},  # Updated to mg/m³
     "NO₂ (Nitrogen Dioxide)": {"col": "NO2", "unit": "μg/m³"},
     "SO₂ (Sulfur Dioxide)": {"col": "SO2", "unit": "μg/m³"},
-    "CO (Carbon Monoxide)": {"col": "CO", "unit": "mg/m³"}  # CO is measured in mg
+    "CO (Carbon Monoxide)": {"col": "CO", "unit": "mg/m³"}
 }
 
 # ==========================================
@@ -85,7 +85,7 @@ def get_forecast_data(user_lat, user_lon, _df):
 master_df = load_data()
 
 st.sidebar.header("📍 Select Location")
-user_input = st.sidebar.text_input("City, Zip Code, or Address (e.g., Los Angeles, Fresno):", "Los Angeles")
+user_input = st.sidebar.text_input("City, Zip Code, or Address (e.g., Malibu, Fresno):", "Malibu")
 
 if st.sidebar.button("Get Forecast") or user_input:
     lat, lon, full_address = get_coordinates(user_input)
@@ -146,7 +146,11 @@ if st.sidebar.button("Get Forecast") or user_input:
             display_df = data_df.copy()
             display_df["Target_Time_UTC"] = display_df["Target_Time_UTC"].dt.strftime('%Y-%m-%d %H:%00 UTC')
             display_df = display_df.rename(columns={"Target_Time_UTC": "Time"})
-            format_dict = {col: "{:.3f}" if "CO" in col else "{:.2f}" for col in display_df.columns if col != "Time"}
+            # Updated format_dict to apply 3 decimal places to both CO and O3
+            format_dict = {
+                col: "{:.3f}" if ("CO" in col or "O3" in col) else "{:.2f}" 
+                for col in display_df.columns if col != "Time"
+            }
             return display_df.style.format(format_dict)
 
         # SimVP-V19 Table
