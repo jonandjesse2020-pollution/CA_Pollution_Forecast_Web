@@ -256,6 +256,3 @@ if st.sidebar.button("Get Forecast") or user_input:
             "Location not found in California. "
             "Please try a different name or zip code."
         )
-
-    else:
-        st.sidebar.error("Location not found in California. Please try a different name or zip code.")
