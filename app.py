@@ -9,7 +9,7 @@ from datetime import datetime, timedelta
 # 1. PAGE SETUP
 # ==========================================
 st.set_page_config(page_title="California Air Quality Forecast", page_icon="🌫️", layout="wide")
-st.title("🌍 California Multi-Pollutant Forecast: SimVP-V19")
+st.title("🌍 California Multi-Pollutant Forecast: SimVP")
 st.markdown(
     "Enter a location to view the 72-hour forecast from our AI model across all 6 criteria pollutants."
 )
@@ -85,7 +85,7 @@ def get_forecast_data(user_lat, user_lon, _df):
 master_df = load_data()
 
 st.sidebar.header("📍 Select Location")
-user_input = st.sidebar.text_input("City, Zip Code, or Address (e.g., Malibu, Fresno):", "Malibu")
+user_input = st.sidebar.text_input("City, Zip Code, or Address (e.g., Los Angeles, Fresno):", "Los Angeles")
 
 if st.sidebar.button("Get Forecast") or user_input:
     lat, lon, full_address = get_coordinates(user_input)
@@ -150,7 +150,7 @@ if st.sidebar.button("Get Forecast") or user_input:
             return display_df.style.format(format_dict)
 
         # SimVP-V19 Table
-        with st.expander("📊 View Raw Data (SimVP-V19)"):
+        with st.expander("📊 View Raw Data (SimVP)"):
             ai_cols = ["Target_Time_UTC"] + [col for col in df.columns if col.startswith("AI_")]
             st.dataframe(format_table(df[ai_cols]), use_container_width=True)
 
